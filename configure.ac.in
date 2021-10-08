@@ -22,30 +22,30 @@
 dnl ***************************
 dnl *** Version information ***
 dnl ***************************
-m4_define([thunarx_verinfo], [0:0:0])
-m4_define([thunarx_version_api], [2])
-m4_define([thunar_version_major], [1])
-m4_define([thunar_version_minor], [6])
-m4_define([thunar_version_micro], [16])
-m4_define([thunar_version_nano], [])
-m4_define([thunar_version_build], [@REVISION@])
-m4_define([thunar_version_tag], [])
-m4_define([thunar_version], [thunar_version_major().thunar_version_minor().thunar_version_micro()ifelse(thunar_version_nano(), [], [], [.thunar_version_nano()])ifelse(thunar_version_tag(), [git], [thunar_version_tag()-thunar_version_build()], [thunar_version_tag()])])
+m4_define([fmbx_verinfo], [0:0:0])
+m4_define([fmbx_version_api], [2])
+m4_define([fmb_version_major], [1])
+m4_define([fmb_version_minor], [6])
+m4_define([fmb_version_micro], [16])
+m4_define([fmb_version_nano], [])
+m4_define([fmb_version_build], [@REVISION@])
+m4_define([fmb_version_tag], [])
+m4_define([fmb_version], [fmb_version_major().fmb_version_minor().fmb_version_micro()ifelse(fmb_version_nano(), [], [], [.fmb_version_nano()])ifelse(fmb_version_tag(), [git], [fmb_version_tag()-fmb_version_build()], [fmb_version_tag()])])
 
 dnl *******************************************
 dnl *** Debugging support for GIT snapshots ***
 dnl *******************************************
-m4_define([thunar_debug_default], [ifelse(thunar_version_tag(), [git], [yes], [minimum])])
+m4_define([fmb_debug_default], [ifelse(fmb_version_tag(), [git], [yes], [minimum])])
 
 dnl ***************************
 dnl *** Initialize autoconf ***
 dnl ***************************
-AC_COPYRIGHT([Copyright (c) 2004-2015 The Thunar development team. All rights reserved.])
-AC_INIT([Thunar], [thunar_version], [http://bugzilla.xfce.org/], [Thunar])
+AC_COPYRIGHT([Copyright (c) 2004-2015 The Fmb development team. All rights reserved.])
+AC_INIT([Fmb], [fmb_version], [http://bugzilla.xfce.org/], [Fmb])
 AC_PREREQ([2.60])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_TARGET()
-AC_REVISION([thunar_version_build])
+AC_REVISION([fmb_version_build])
 
 dnl ***************************
 dnl *** Initialize automake ***
@@ -86,16 +86,16 @@ LT_INIT([disable-static])
 dnl **************************************
 dnl *** Substitute version information ***
 dnl **************************************
-THUNARX_VERINFO=thunarx_verinfo()
-THUNARX_VERSION_API=thunarx_version_api()
-THUNAR_VERSION_MAJOR=thunar_version_major()
-THUNAR_VERSION_MINOR=thunar_version_minor()
-THUNAR_VERSION_MICRO=thunar_version_micro()
-AC_SUBST([THUNARX_VERINFO])
-AC_SUBST([THUNARX_VERSION_API])
-AC_SUBST([THUNAR_VERSION_MAJOR])
-AC_SUBST([THUNAR_VERSION_MINOR])
-AC_SUBST([THUNAR_VERSION_MICRO])
+FMBX_VERINFO=fmbx_verinfo()
+FMBX_VERSION_API=fmbx_version_api()
+FMB_VERSION_MAJOR=fmb_version_major()
+FMB_VERSION_MINOR=fmb_version_minor()
+FMB_VERSION_MICRO=fmb_version_micro()
+AC_SUBST([FMBX_VERINFO])
+AC_SUBST([FMBX_VERSION_API])
+AC_SUBST([FMB_VERSION_MAJOR])
+AC_SUBST([FMB_VERSION_MINOR])
+AC_SUBST([FMB_VERSION_MICRO])
 
 dnl ******************************
 dnl *** Set helper path prefix ***
@@ -140,16 +140,16 @@ XDT_CHECK_LIBX11_REQUIRE()
 dnl ***********************************
 dnl *** Check for required packages ***
 dnl ***********************************
-XDT_CHECK_PACKAGE([EXO], [exo-1], [0.10.0])
+XDT_CHECK_PACKAGE([BLXO], [blxo-1], [0.10.0])
 XDT_CHECK_PACKAGE([GLIB], [glib-2.0], [2.30.0])
 XDT_CHECK_PACKAGE([GIO], [gio-2.0], [2.30.0])
 XDT_CHECK_PACKAGE([GTHREAD], [gthread-2.0], [2.30.0])
 XDT_CHECK_PACKAGE([GMODULE], [gmodule-2.0], [2.30.0])
 XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [2.24.0])
 XDT_CHECK_PACKAGE([GDK_PIXBUF], [gdk-pixbuf-2.0], [2.14.0])
-XDT_CHECK_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [4.10.0])
-XDT_CHECK_PACKAGE([LIBXFCE4UI], [libxfce4ui-1], [4.10.0])
-XDT_CHECK_PACKAGE([XFCONF], [libxfconf-0], [4.10.0])
+XDT_CHECK_PACKAGE([LIBBLADEUTIL], [libbladeutil-1.0], [4.10.0])
+XDT_CHECK_PACKAGE([LIBBLADEUI], [libbladeui-1], [4.10.0])
+XDT_CHECK_PACKAGE([BLCONF], [libblconf-0], [4.10.0])
 
 dnl ********************************************
 dnl *** Check for session management support ***
@@ -169,10 +169,10 @@ XDT_CHECK_OPTIONAL_PACKAGE([DBUS], [dbus-glib-1],
                            [0.34], [dbus], [D-BUS support])
 
 dnl ***************************************************************
-dnl *** Optional support for GUDev (required for thunar-volman) ***
+dnl *** Optional support for GUDev (required for fmb-volman) ***
 dnl ***************************************************************
 XDT_CHECK_OPTIONAL_PACKAGE([GUDEV], [gudev-1.0], [145], [gudev], 
-                           [GUDev (required for thunar-volman)])
+                           [GUDev (required for fmb-volman)])
 
 dnl **************************************
 dnl *** Optional support for libnotify ***
@@ -183,7 +183,7 @@ XDT_CHECK_OPTIONAL_PACKAGE([LIBNOTIFY], [libnotify], [0.4.0], [notifications],
 dnl ***********************************
 dnl *** Check for debugging support ***
 dnl ***********************************
-XDT_FEATURE_DEBUG([thunar_debug_default])
+XDT_FEATURE_DEBUG([fmb_debug_default])
 
 dnl **************************************
 dnl *** Check for linker optimizations ***
@@ -211,11 +211,11 @@ AC_SUBST([PLATFORM_LDFLAGS])
 dnl ************************************
 dnl *** Check for additional plugins ***
 dnl ************************************
-BM_THUNAR_PLUGIN_APR()
-BM_THUNAR_PLUGIN_SBR()
-BM_THUNAR_PLUGIN_TPA()
-BM_THUNAR_PLUGIN_UCA()
-BM_THUNAR_PLUGIN_WALLPAPER()
+BM_FMB_PLUGIN_APR()
+BM_FMB_PLUGIN_SBR()
+BM_FMB_PLUGIN_TPA()
+BM_FMB_PLUGIN_UCA()
+BM_FMB_PLUGIN_WALLPAPER()
 
 AC_OUTPUT([
 Makefile
@@ -233,17 +233,17 @@ icons/128x128/Makefile
 icons/scalable/Makefile
 pixmaps/Makefile
 plugins/Makefile
-plugins/thunar-apr/Makefile
-plugins/thunar-sbr/Makefile
-plugins/thunar-sendto-email/Makefile
-plugins/thunar-tpa/Makefile
-plugins/thunar-uca/Makefile
-plugins/thunar-wallpaper/Makefile
+plugins/fmb-apr/Makefile
+plugins/fmb-sbr/Makefile
+plugins/fmb-sendto-email/Makefile
+plugins/fmb-tpa/Makefile
+plugins/fmb-uca/Makefile
+plugins/fmb-wallpaper/Makefile
 po/Makefile.in
-thunar/Makefile
-thunarx/Makefile
-thunarx/thunarx-2.pc
-thunarx/thunarx-config.h
+fmb/Makefile
+fmbx/Makefile
+fmbx/fmbx-2.pc
+fmbx/fmbx-config.h
 ])
 
 dnl ***************************
@@ -263,9 +263,9 @@ else
 echo "* GIO UNIX features:                  no"
 fi
 if test x"$GUDEV_FOUND" = x"yes"; then
-echo "* GUDev (required for thunar-volman): yes"
+echo "* GUDev (required for fmb-volman): yes"
 else
-echo "* GUDev (required for thunar-volman): no"
+echo "* GUDev (required for fmb-volman): no"
 fi
 if test x"$LIBNOTIFY_FOUND" = x"yes"; then
 echo "* Mount notification support:         yes"
@@ -276,9 +276,9 @@ echo "* Debug Support:                      $enable_debug"
 echo
 echo "Additional Plugins:"
 echo
-echo "* Advanced Properties:                $ac_bm_thunar_plugin_apr"
-echo "* Simple Builtin Renamers:            $ac_bm_thunar_plugin_sbr"
-echo "* Trash Panel Applet:                 $ac_bm_thunar_plugin_tpa"
-echo "* User Customizable Actions:          $ac_bm_thunar_plugin_uca"
-echo "* Wallpaper support:                  $ac_bm_thunar_plugin_wallpaper"
+echo "* Advanced Properties:                $ac_bm_fmb_plugin_apr"
+echo "* Simple Builtin Renamers:            $ac_bm_fmb_plugin_sbr"
+echo "* Trash Bar Applet:                 $ac_bm_fmb_plugin_tpa"
+echo "* User Customizable Actions:          $ac_bm_fmb_plugin_uca"
+echo "* Wallpaper support:                  $ac_bm_fmb_plugin_wallpaper"
 echo

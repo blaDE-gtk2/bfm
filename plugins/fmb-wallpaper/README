@@ -1,0 +1,7 @@
+Fmb Wallpaper Plugin (fmb-wallpaper)
+===========================================
+
+The Fmb Wallpaper plugin is an extension to Fmb. It depends on the
+blconf-query command line to set the correct settings on the Xfce4 desktop.
+
+To disable this plugin, pass --disable-wallpaper-plugin to ./configure.

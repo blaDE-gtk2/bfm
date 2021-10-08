@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" 
+               "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
+
+<!ENTITY FmbxFileInfo SYSTEM "xml/fmbx-file-info.xml">
+<!ENTITY FmbxMenuProvider SYSTEM "xml/fmbx-menu-provider.xml">
+<!ENTITY FmbxPreferencesProvider SYSTEM "xml/fmbx-preferences-provider.xml">
+<!ENTITY FmbxPropertyPage SYSTEM "xml/fmbx-property-page.xml">
+<!ENTITY FmbxPropertyPageProvider SYSTEM "xml/fmbx-property-page-provider.xml">
+<!ENTITY FmbxProviderFactory SYSTEM "xml/fmbx-provider-factory.xml">
+<!ENTITY FmbxProviderPlugin SYSTEM "xml/fmbx-provider-plugin.xml">
+<!ENTITY FmbxRenamer SYSTEM "xml/fmbx-renamer.xml">
+<!ENTITY FmbxRenamerProvider SYSTEM "xml/fmbx-renamer-provider.xml">
+<!ENTITY fmbx-version-information SYSTEM "xml/fmbx-version-information.xml">
+
+<!ENTITY version SYSTEM "version.xml">
+<!ENTITY date "January 2010">
+]>
+
+<book id="index">
+  <bookinfo>
+    <title>Fmb Extensions Reference Manual</title>
+    <releaseinfo>Version &version;</releaseinfo>
+    <pubdate>&date;</pubdate>
+
+    <copyright>
+      <year>2005</year>
+      <holder>Benedikt Meurer</holder>
+    </copyright>
+
+    <copyright>
+      <year>2010</year>
+      <holder>Jannis Pohlmann</holder>
+    </copyright>
+
+    <legalnotice id="legalnotice">
+      <para>
+        Permission is granted to copy, distribute and/or modify this document
+        under the terms of the GNU Free Documentation License, Version 1.1 or
+        any later version published by the Free Software Foundation; with no
+        Invariant Sections, with no Front-Cover Texts, and with no Back-Cover
+        Texts. The complete license text is available from the <ulink
+        type="http" url="http://www.gnu.org/">Free Software Foundation</ulink>.
+      </para>
+    </legalnotice>
+
+    <authorgroup>
+      <author>
+        <firstname>Benedikt</firstname>
+        <surname>Meurer</surname>
+        <affiliation>
+          <address><email>benny@xfce.org</email></address>
+          <orgname>os-cillation</orgname>
+          <orgdiv>System development</orgdiv>
+          <jobtitle>Software developer</jobtitle>
+        </affiliation>
+      </author>
+      <author>
+        <firstname>Jannis</firstname>
+        <surname>Pohlmann</surname>
+        <affiliation>
+          <address><email>jannis@xfce.org</email></address>
+        </affiliation>
+      </author>
+    </authorgroup>
+  </bookinfo>
+
+  <part id="fmbx-overview">
+    <title>Overview</title>
+
+    <para>
+      The Fmb Extension Framework (<systemitem class="library">fmbx</systemitem>) provides
+      developers with an easy way to extend the basic functionality provided by
+      the <ulink type="http" url="https://docs.xfce.org/blade/fmb/Start/">Fmb File Manager</ulink>.
+      The <systemitem class="library">fmbx</systemitem> library includes interfaces that can
+      be implemented by extensions for various purposes.
+    </para>
+
+    <para>
+      It is based on the <ulink type="http"
+      url="http://library.gnome.org/devel/gobject/unstable/chapter-gtype.html">GLib Dynamic Type
+      System</ulink> and loads the extensions on demand to reduce the system resources
+      allocated for the file manager process.
+    </para>
+
+    <sect1 id="fmbx-overview-goals">
+      <title>Goals</title>
+
+      <para>
+        The Fmb Extension Framework was developed with the following goals in mind:
+      </para>
+
+      <orderedlist>
+        <listitem>
+          It should be easy to extend the functionality of the file manager in certain
+          ways.
+        </listitem>
+
+        <listitem>
+          The internals of the file manager should be hidden from the extensions to be
+          able to maintain API/ABI compatibility for extensions over various major
+          releases of the file manager.
+        </listitem>
+
+        <listitem>
+          Provide basic compatibility with the <ulink type="http"
+          url="http://www.gnome.org/projects/nautilus/">Nautilus</ulink> Extension Framework,
+          so vendors don't need to write several versions of their extensions for the various
+          file managers. With the current implementation it should be easy to write a small
+          wrapper library for generic extensions that can be loaded into both Fmb and
+          Nautilus.
+        </listitem>
+
+        <listitem>
+          Extensions should not be loaded into memory until they are actually required to
+          save system resources. This differs from the way Nautilus handles extensions and
+          therefore people that already know how to write Nautilus extensions must be
+          careful when writing extensions for Fmb, because Fmb actually unloads the
+          extension when it's no longer needed. The <ulink type="http"
+          url="http://library.gnome.org/devel/gobject/unstable/GTypePlugin.html">GTypePlugin</ulink>
+          and <ulink type="http"
+          url="http://library.gnome.org/devel/gobject/unstable/GTypeModule.html">GTypeModule</ulink>
+          sections in the <ulink type="http" url="http://library.gnome.org/devel/gobject/unstable/">GObject
+          Reference Manual</ulink> provide details about the handling of dynamic type plugins.
+        </listitem>
+
+        <listitem>
+          Permit developers to write extensions in languages other than C.
+        </listitem>
+      </orderedlist>
+    </sect1>
+  </part>
+
+  <part id="fmbx-writing-extensions">
+    <title>Writing Extensions</title>
+
+    <para>
+      This section explains the basic steps required to write an extension for the <ulink type="http"
+      url="https://docs.xfce.org/blade/fmb/start">Fmb File Manager</ulink> using the C language interface. It is
+      just a short introduction and not meant to provide extensive details about the internal workings
+      of the file manager.
+    </para>
+
+    <sect1 id="fmbx-writing-extensions-basic-concepts">
+      <title>Basic Concepts</title>
+
+      <sect2 id="fmbx-writing-extensions-extensions-and-providers">
+        <title>Extensions and Providers</title>
+
+        <para>
+          <emphasis>Fmb Extensions</emphasis> are shared libraries that extend the basic functionality
+          provided by the Fmb File Manager. An extension exports one or more <link
+          linkend="GObject"><type>GObject</type></link>s, called <emphasis>providers</emphasis>, to Fmb.
+        </para>
+
+        <para>
+          Providers implement one or more of the <link linkend="GInterface"><type>GInterface</type></link>s included with
+          the <systemitem class="library">fmbx</systemitem> library. The currently exported interfaces
+          include the <link linkend="FmbxMenuProvider"><type>FmbxMenuProvider</type></link> for adding context menu
+          items to the file views, the <link
+          linkend="FmbxPropertyPageProvider"><type>FmbxPropertyPageProvider</type></link> for adding pages to the
+          file properties dialog, the <link
+          linkend="FmbxPreferencesProvider"><type>FmbxPreferencesProvider</type></link> for adding actions to the
+          preferences section of the main menu, and the <link
+          linkend="FmbxRenamerProvider"><type>FmbxRenamerProvider</type></link> for adding renamers to the bulk
+          rename dialog.
+        </para>
+      </sect2>
+
+      <sect2 id="fmbx-writing-extensions-fmbxfileinfo">
+        <title>FmbxFileInfo</title>
+
+        <para>
+          Fmb passes file references to the provider using <link linkend="FmbxFileInfo"><type>FmbxFileInfo</type></link>
+          objects. The <link linkend="FmbxFileInfo"><type>FmbxFileInfo</type></link> interface provides access to the file
+          information that Fmb has already read - mime type, URI, name, etc. Extensions should use the data from
+          the <link linkend="FmbxFileInfo"><type>FmbxFileInfo</type></link> rather than reading it themselves, to
+          prevent excessive I/O.
+        </para>
+
+        <para>
+          There is exactly one <link linkend="FmbxFileInfo"><type>FmbxFileInfo</type></link> per file, and it is kept around
+          for as long as Fmb is interested in the file. Extensions can use this information to manage lifecycles of
+          its own data - e.g. when the <link linkend="FmbxFileInfo"><type>FmbxFileInfo</type></link> goes away, it is safe
+          for the extension to forget any private data for that file.
+        </para>
+      </sect2>
+
+      <sect2 id="fmbx-writing-extensions-names">
+        <title>Names</title>
+
+        <para>
+          Most objects created by the extensions need names, e.g. the <link linkend="GtkAction"><type>GtkAction</type></link>s
+          returned from the <link linkend="FmbxMenuProvider"><type>FmbxMenuProvider</type></link>s. These names must be
+          namespaced with the name of the extension. For example the main action returned from the
+          <application>TexOpenTerminal</application> extension (which can be found in the <filename
+          role="directory">examples/tex-open-terminal</filename> subdirectory of the Fmb distribution) should be called
+          <literal>TexOpenTerminal::open-terminal</literal>. The namespace must be global among the providers exported by
+          a certain extension.
+        </para>
+      </sect2>
+
+      <sect2 id="fmbx-writing-extensions-types">
+        <title>Types</title>
+
+        <para>
+          Fmb extensions are loaded as <link linkend="GTypeModule"><type>GTypeModule</type></link>s. This means that all GTypes
+          created by the extension must be registered with the <link linkend="GTypeModule"><type>GTypeModule</type></link>, using
+          <link linkend="fmbx-provider-plugin-register-type"><function>fmbx_provider_plugin_register_type()</function></link>
+          function (or one of the convenience macros like <link linkend="FMBX-DEFINE-TYPE:CAPS"><function>FMBX_DEFINE_TYPE()</function></link>)
+          rather than <link linked="g-type-register-static"><function>g_type_register_static()</function></link>. All types
+          exported by an extension must be registered in
+          <link linkend="fmb-extension-initialize"><function>fmb_extension_initialize()</function></link>.
+        </para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="fmbx-writing-extensions-getting-started">
+      <title>Getting Started</title>
+
+      <para>
+        Providers are <link linkend="FmbxProviderPlugin"><type>FmbxProviderPlugin</type></link>s loaded from shared libraries
+        installed in <filename role="directory">$libdir/fmbx-2/</filename>. The shared libraries are linked against the
+        <systemitem class="library">fmbx-2</systemitem> library.
+      </para>
+
+      <para>
+        The extensions must provide three public functions, <function>fmb_extension_initialize()</function>,
+        <function>fmb_extension_shutdown()</function> and <function>fmb_extension_list_types()</function>.
+      </para>
+
+      <para>
+        <function>fmb_extension_initialize()</function> is passed a <link linkend="FmbxProviderPlugin"><type>FmbxProviderPlugin</type></link>
+        object, and is responsible to register all GTypes required by the extension. <function>fmb_extension_shutdown()</function> should
+        perform any extension-specific shutdown required prior to unloading the extension. <function>fmb_extension_list_types()</function>
+        returns an array of GTypes that represent the types of the providers exported by the extension. Fmb will instantiate
+        objects of those types when needed.
+      </para>
+
+      <example>
+        <title>Basic Structure of an extension</title>
+
+        <programlisting>
+#include &lt;gmodule.h&gt;
+#include &lt;fmbx/fmbx.h&gt;
+
+static GType type_list[1];
+
+static void
+foo_extension_register_type (FmbxProviderPlugin *plugin)
+{
+  static const GTypeInfo info =
+  {
+    sizeof (FooExtensionClass),
+    NULL,
+    NULL,
+    (GClassInitFunc) foo_extension_class_init,
+    NULL,
+    NULL,
+    sizeof (FooExtension),
+    0,
+    (GInstanceInitFunc) foo_extension_init,
+    NULL,
+  };
+
+  type_list[0] = fmbx_provider_plugin_register_type (plugin,
+                                                        G_TYPE_OBJECT,
+                                                        "FooExtension",
+                                                        &amp;info, 0);
+
+  /* implement the desired provider interfaces */
+}
+
+static GType
+foo_extension_get_type (void)
+{
+  return type_list[0];
+}
+
+G_MODULE_EXPORT void
+fmb_extension_initialize (FmbxProviderPlugin *plugin)
+{
+  const gchar *mismatch;
+
+  /* verify the versions */
+  mismatch = fmbx_check_version (FMBX_MAJOR_VERSION,
+                                    FMBX_MINOR_VERSION,
+                                    FMBX_MICRO_VERSION);
+  if (G_UNLIKELY (mismatch != NULL))
+    {
+      g_warning ("Version mismatch: %s", mismatch);
+      return;
+    }
+
+  foo_extension_register_type (plugin);
+}
+
+G_MODULE_EXPORT void
+fmb_extension_shutdown (void)
+{
+  /* any extension-specific shutdown */
+}
+
+G_MODULE_EXPORT void
+fmb_extension_list_types (const GType **types,
+                             gint         *n_types)
+{
+  *types = type_list;
+  *n_types = G_N_ELEMENTS (type_list);
+}</programlisting>
+      </example>
+
+      <para>
+        You should check the <application>TexOpenTerminal</application> extension, which is included in the Fmb
+        distribution in the <filename role="directory">examples/tex-open-terminal</filename> directory, for a more
+        complete example of how to write a Fmb extension.
+      </para>
+
+      <sect2 id="fmbx-writing-extensions-compiling-fmb-extensions">
+        <title>Compiling Fmb Extensions</title>
+
+        <para>
+          To compile a Fmb extension, you need to tell the compiler where to find the
+          <systemitem class="library">fmbx</systemitem> header files and library. This
+          is done with the <literal>pkg-config</literal> utility.
+        </para>
+
+        <para>
+          The following interactive shell session demonstrates how <literal>pkg-config</literal>
+          is used (the actual output on your system will be different):
+          <screen>
+$ pkg-config --cflags fmbx-2
+-DXTHREADS -DXUSE_MTSAFE_API -I/opt/local/include/fmbx-2 -I/usr/local/include/atk-1.0 \
+-I/usr/local/include/glib-2.0 -I/usr/local/lib/glib-2.0/include -I/usr/X11R6/include/gtk-2.0 \
+-I/usr/X11R6/lib/gtk-2.0/include -I/usr/X11R6/include -I/usr/X11R6/include/pango-1.0 \
+-I/usr/local/include/freetype2 -I/usr/local/include
+$ pkg-config --libs fmbx-2
+-Wl,--rpath -Wl,/usr/local/lib -L/usr/local/lib -L/usr/X11R6/lib -L/opt/local/lib -lfmbx-2</screen>
+        </para>
+
+        <para>
+          The easiest way to compile an extension is to use the <emphasis>backticks</emphasis>
+          feature of the shell. If you enclose a command in backticks (<emphasis>not single
+          quotes</emphasis>), then its output will be substituted into the command line before
+          execution. So to compile an extension, you would type the following:
+          <screen>
+$ gcc -shared -fPIC -DPIC `pkg-config --cflags --libs fmbx-2` foo.c -o foo.so</screen>
+        </para>
+      </sect2>
+
+      <sect2 id="fmbx-writing-extensions-installing-fmb-extensions">
+        <title>Installing Fmb Extensions</title>
+
+        <para>
+          To determine the directory where extensions must be installed on your local system,
+          you can use the following command (as mentioned above, the output will be different
+          on your system):
+          <screen>
+$ pkg-config --variable=extensionsdir fmbx-2
+/opt/local/lib/fmbx-2</screen>
+        </para>
+
+        <para>
+          For example, to install the extension <filename>foo.so</filename> on your system,
+          you would type the following:
+          <screen>
+$ install -d `pkg-config --variable=extensionsdir fmbx-2`
+$ install -c -m 0755 foo.so `pkg-config --variable=extensionsdir fmbx-2`/foo.so</screen>
+        </para>
+      </sect2>
+    </sect1>
+
+    <sect1 id="fmbx-writing-extensions-advanced-topics">
+      <title>Advanced topics</title>
+
+      <para>
+        This section provides a short introduction to some of the advanced topics in the
+        Fmb Extension Framework.
+      </para>
+
+      <sect2 id="fmbx-writing-extensions-memory-resident-extensions">
+        <title>Memory-Resident Extensions</title>
+
+        <para>
+          Some extensions may not play well with Fmb's on-demand loading and unloading
+          of extensions. For example, an extension that uses a desktop library, which in
+          turn registers additional static GTypes will not work after being loaded and
+          unloaded for the first time. For these kind of extensions, Fmb provides the
+          option to make extensions <emphasis>memory resident</emphasis>, which means the
+          extension will be loaded once and afterwards will never be unloaded again until
+          Fmb exits.
+        </para>
+
+        <para>
+          Such extensions must set the <literal>resident</literal> property of the provider plugin in its
+          <function>fmb_extension_initialize()</function> function to <literal>TRUE</literal>, using the <link
+          linkend="fmbx-provider-plugin-set-resident"><function>fmbx_provider_plugin_set_resident()</function></link>
+          method.
+        </para>
+
+        <example>
+          <title>Making an extension memory resident</title>
+          <programlisting>
+G_MODULE_EXPORT void
+fmb_extension_initialize (FmbxProviderPlugin *plugin)
+{
+  /* setup the types for the extension */
+  ...
+
+  /* ensure that the extension will never be unloaded */
+  fmbx_provider_plugin_set_resident (plugin, TRUE);
+}</programlisting>
+        </example>
+      </sect2>
+    </sect1>
+  </part>
+
+  <part id="fmbx-fundamentals">
+    <title>Fundamentals</title>
+
+    &fmbx-version-information;
+  </part>
+
+  <part id="fmbx-abstraction-layer">
+    <title>Abstraction Layer</title>
+
+    <para>
+      In order to hide the internals of the file manager from the extensions, the <systemitem
+      class="library">fmbx</systemitem> library provides an abstraction layer, which includes
+      interfaces accessible to the extension, that are implemented by the file manager at runtime.
+    </para>
+
+    <para>
+      <inlinegraphic fileref="abstraction.png" format="PNG" />
+    </para>
+
+    <para>
+      Currently the abstraction layer consists of the interface <link
+      linkend="FmbxFileInfo"><type>FmbxFileInfo</type></link>, which provides
+      extensions with a way to access information about a file handled within
+      the file manager, the class <link
+      linkend="FmbxPropertyPage"><type>FmbxPropertyPage</type></link>, which
+      is the base class for widgets that can be added to the properties dialog by
+      extensions, the interface <link
+      linkend="FmbxProviderPlugin"><type>FmbxProviderPlugin</type></link>, which
+      hides the details of dynamic type registration from the extensions, and the
+      class <link linkend="FmbxRenamer"><type>FmbxRenamer</type></link>, which
+      is the abstract base class for renamers that can be used in the bulk rename
+      dialog provided by Fmb to rename multiple files at once.
+    </para>
+
+    &FmbxFileInfo;
+    &FmbxPropertyPage;
+    &FmbxProviderPlugin;
+    &FmbxRenamer;
+  </part>
+
+  <part id="fmbx-providers">
+    <title>Providers</title>
+
+    <para>
+      The extensions interact with the file manager by implementing so called
+      <emphasis>providers</emphasis>. This is a concept adopted from the Nautilus
+      Extension Framework.
+    </para>
+
+    <para>
+      Providers are interfaces in the <systemitem class="library">fmbx</systemitem>
+      library that describe the functionality provided by a certain extension. For
+      example, when the file manager pops up the file context menu, it'll first lookup
+      all extensions that implement the interface <interface>FmbxMenuProvider</interface>
+      ask those extensions for the list of additional actions.
+    </para>
+
+    <para>
+      <inlinegraphic fileref="menu-provider.png" format="PNG" />
+    </para>
+
+    &FmbxMenuProvider;
+    &FmbxPropertyPageProvider;
+    &FmbxPreferencesProvider;
+    &FmbxRenamerProvider;
+  </part>
+
+  <part id="fmbx-using-extensions">
+    <title>Using Fmb extensions in applications</title>
+
+    &FmbxProviderFactory;
+  </part>
+
+  <index>
+    <title>Index</title>
+  </index>
+</book>
+
+<!--
+  vi:set ts=2 sw=2 et ai syntax=docbkxml:
+-->

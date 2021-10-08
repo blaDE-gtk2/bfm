@@ -1,0 +1,199 @@
+<INCLUDE>fmbx/fmbx.h</INCLUDE>
+
+<SECTION>
+<FILE>fmbx-file-info</FILE>
+<TITLE>FmbxFileInfo</TITLE>
+FmbxFileInfoIface
+FmbxFileInfo
+fmbx_file_info_get_name
+fmbx_file_info_get_uri
+fmbx_file_info_get_parent_uri
+fmbx_file_info_get_uri_scheme
+fmbx_file_info_get_mime_type
+fmbx_file_info_has_mime_type
+fmbx_file_info_is_directory
+fmbx_file_info_get_file_info
+fmbx_file_info_get_filesystem_info
+fmbx_file_info_get_location
+fmbx_file_info_changed
+fmbx_file_info_renamed
+FMBX_TYPE_FILE_INFO_LIST
+fmbx_file_info_list_copy
+fmbx_file_info_list_free
+<SUBSECTION Standard>
+FMBX_TYPE_FILE_INFO
+FMBX_FILE_INFO
+FMBX_IS_FILE_INFO
+FMBX_FILE_INFO_GET_IFACE
+<SUBSECTION Private>
+fmbx_file_info_get_type
+fmbx_file_info_list_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-menu-provider</FILE>
+<TITLE>FmbxMenuProvider</TITLE>
+FmbxMenuProviderIface
+FmbxMenuProvider
+fmbx_menu_provider_get_file_actions
+fmbx_menu_provider_get_folder_actions
+fmbx_menu_provider_get_dnd_actions
+<SUBSECTION Standard>
+FMBX_TYPE_MENU_PROVIDER
+FMBX_MENU_PROVIDER
+FMBX_IS_MENU_PROVIDER
+FMBX_MENU_PROVIDER_GET_IFACE
+<SUBSECTION Private>
+fmbx_menu_provider_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-preferences-provider</FILE>
+<TITLE>FmbxPreferencesProvider</TITLE>
+FmbxPreferencesProviderIface
+FmbxPreferencesProvider
+fmbx_preferences_provider_get_actions
+<SUBSECTION Standard>
+FMBX_TYPE_PREFERENCES_PROVIDER
+FMBX_PREFERENCES_PROVIDER
+FMBX_IS_PREFERENCES_PROVIDER
+FMBX_PREFERENCES_PROVIDER_GET_IFACE
+<SUBSECTION Private>
+fmbx_preferences_provider_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-property-page</FILE>
+<TITLE>FmbxPropertyPage</TITLE>
+FmbxPropertyPage
+fmbx_property_page_new
+fmbx_property_page_new_with_label_widget
+fmbx_property_page_get_label
+fmbx_property_page_set_label
+fmbx_property_page_get_label_widget
+fmbx_property_page_set_label_widget
+<SUBSECTION Standard>
+FmbxPropertyPageClass
+FMBX_TYPE_PROPERTY_PAGE
+FMBX_PROPERTY_PAGE
+FMBX_PROPERTY_PAGE_CLASS
+FMBX_IS_PROPERTY_PAGE
+FMBX_IS_PROPERTY_PAGE_CLASS
+FMBX_PROPERTY_PAGE_GET_CLASS
+<SUBSECTION Private>
+FmbxPropertyPagePrivate
+fmbx_property_page_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-property-page-provider</FILE>
+<TITLE>FmbxPropertyPageProvider</TITLE>
+FmbxPropertyPageProvider
+FmbxPropertyPageProviderIface
+fmbx_property_page_provider_get_pages
+<SUBSECTION Standard>
+FMBX_TYPE_PROPERTY_PAGE_PROVIDER
+FMBX_PROPERTY_PAGE_PROVIDER
+FMBX_IS_PROPERTY_PAGE_PROVIDER
+FMBX_PROPERTY_PAGE_PROVIDER_GET_IFACE
+<SUBSECTION Private>
+fmbx_property_page_provider_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-provider-factory</FILE>
+<TITLE>FmbxProviderFactory</TITLE>
+FmbxProviderFactory
+fmbx_provider_factory_get_default
+fmbx_provider_factory_list_providers
+<SUBSECTION Standard>
+FmbxProviderFactoryClass
+FMBX_TYPE_PROVIDER_FACTORY
+FMBX_PROVIDER_FACTORY
+FMBX_PROVIDER_FACTORY_CLASS
+FMBX_IS_PROVIDER_FACTORY
+FMBX_IS_PROVIDER_FACTORY_CLASS
+FMBX_PROVIDER_FACTORY_GET_CLASS
+<SUBSECTION Private>
+fmbx_provider_factory_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-provider-plugin</FILE>
+<TITLE>FmbxProviderPlugin</TITLE>
+FmbxProviderPlugin
+FmbxProviderPluginIface
+fmbx_provider_plugin_get_resident
+fmbx_provider_plugin_set_resident
+fmbx_provider_plugin_register_type
+fmbx_provider_plugin_add_interface
+fmbx_provider_plugin_register_enum
+fmbx_provider_plugin_register_flags
+FMBX_DEFINE_TYPE
+FMBX_DEFINE_TYPE_WITH_CODE
+FMBX_DEFINE_ABSTRACT_TYPE
+FMBX_DEFINE_ABSTRACT_TYPE_WITH_CODE
+FMBX_DEFINE_TYPE_EXTENDED
+FMBX_IMPLEMENT_INTERFACE
+<SUBSECTION Standard>
+FMBX_TYPE_PROVIDER_PLUGIN
+FMBX_PROVIDER_PLUGIN
+FMBX_IS_PROVIDER_PLUGIN
+FMBX_PROVIDER_PLUGIN_GET_IFACE
+<SUBSECTION Private>
+fmbx_provider_plugin_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-renamer</FILE>
+<TITLE>FmbxRenamer</TITLE>
+FmbxRenamer
+FmbxRenamerClass
+fmbx_renamer_get_help_url
+fmbx_renamer_set_help_url
+fmbx_renamer_get_name
+fmbx_renamer_set_name
+fmbx_renamer_process
+fmbx_renamer_load
+fmbx_renamer_save
+fmbx_renamer_get_actions
+fmbx_renamer_changed
+<SUBSECTION Standard>
+FMBX_TYPE_RENAMER
+FMBX_RENAMER
+FMBX_RENAMER_CLASS
+FMBX_IS_RENAMER
+FMBX_IS_RENAMER_CLASS
+FMBX_RENAMER_GET_CLASS
+<SUBSECTION Private>
+fmbx_renamer_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-renamer-provider</FILE>
+<TITLE>FmbxRenamerProvider</TITLE>
+FmbxRenamerProvider
+FmbxRenamerProviderIface
+fmbx_renamer_provider_get_renamers
+<SUBSECTION Standard>
+FMBX_TYPE_RENAMER_PROVIDER
+FMBX_RENAMER_PROVIDER
+FMBX_IS_RENAMER_PROVIDER
+FMBX_RENAMER_PROVIDER_GET_IFACE
+<SUBSECTION Private>
+fmbx_renamer_provider_get_type
+</SECTION>
+
+<SECTION>
+<FILE>fmbx-version-information</FILE>
+<TITLE>Variables and functions to check the library version</TITLE>
+fmbx_major_version
+fmbx_minor_version
+fmbx_micro_version
+fmbx_check_version
+FMBX_MAJOR_VERSION
+FMBX_MINOR_VERSION
+FMBX_MICRO_VERSION
+FMBX_CHECK_VERSION
+</SECTION>
+

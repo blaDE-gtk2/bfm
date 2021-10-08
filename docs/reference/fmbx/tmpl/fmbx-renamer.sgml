@@ -1,0 +1,169 @@
+<!-- ##### SECTION Title ##### -->
+FmbxRenamer
+
+<!-- ##### SECTION Short_Description ##### -->
+The abstract base class for bulk renamers
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+  The abstract base class <type>FmbxRenamer</type> is implemented by
+  extensions which provide additional bulk renamers that should be used in
+  the bulk rename dialog.
+</para>
+
+<para>
+  Derived classes must override the fmbx_renamer_process() method, which
+  is called by the bulk rename dialog for every file to generate a new name. For
+  example, the <type>FmbSbrReplaceRenamer</type> class included in the
+  <literal>fmb-sbr</literal> plugin (which is part of the Fmb distribution)
+  provides a bulk renamer, named <emphasis>Search &amp; Replace</emphasis>,
+  which allows the user to rename multiple files by searching for a pattern in
+  each file name and, if the pattern is found, replacing it with the specified
+  replacement text.
+</para>
+
+<para>
+  <inlinegraphic fileref="bulk-rename.png" format="PNG" />
+</para>
+
+<para>
+  The active <type>FmbxRenamer</type>s user interface is displayed in a frame
+  below the file list, as shown in the screenshot above. Derived classes should try
+  to limit the number of widgets displayed in the main user interface. For example,
+  if you have more than six settings, you should consider adding an <guibutton>Advanced</guibutton>,
+  button which opens a dialog with the additional settings.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+  The description of the <link linkend="FmbxRenamerProvider"><type>FmbxRenamerProvider</type></link>
+  interface.
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT FmbxRenamer ##### -->
+<para>
+  Abstract base instance type for bulk renamers.
+</para>
+
+
+<!-- ##### SIGNAL FmbxRenamer::changed ##### -->
+<para>
+
+</para>
+
+@fmbxrenamer: the object which received the signal.
+
+<!-- ##### ARG FmbxRenamer:help-url ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG FmbxRenamer:name ##### -->
+<para>
+
+</para>
+
+<!-- ##### STRUCT FmbxRenamerClass ##### -->
+<para>
+  Abstract base class with virtual methods implemented by extensions
+  that provide additional bulk renamers for the integrated bulk
+  rename module in Fmb.
+</para>
+
+@process: 	see fmbx_renamer_process().
+@load:    	see fmbx_renamer_load().
+@save:    	see fmbx_renamer_save().
+@get_actions: 	see fmbx_renamer_get_actions().
+@changed: 	see fmbx_renamer_changed().
+
+<!-- ##### FUNCTION fmbx_renamer_get_help_url ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_set_help_url ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@help_url: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_get_name ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_set_name ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@name: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_process ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@file: 
+@text: 
+@index: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_load ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@settings: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_save ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@settings: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_get_actions ##### -->
+<para>
+
+</para>
+
+@renamer: 
+@window: 
+@files: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_renamer_changed ##### -->
+<para>
+
+</para>
+
+@renamer: 
+
+

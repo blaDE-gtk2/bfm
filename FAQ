@@ -1,18 +1,18 @@
-This file contains a list of frequently asked questions about Thunar and the
+This file contains a list of frequently asked questions about Fmb and the
 appropriate answers to these questions.
 
 
-1. What is Thunar?
+1. What is Fmb?
 ==================
 
-  Thunar is a fast and easy-to-use file manager for the X Window System, with a
+  Fmb is a fast and easy-to-use file manager for the X Window System, with a
   special focus on the Xfce Desktop Environment.
 
 
-2. Why doesn't Thunar execute files marked as executable?
+2. Why doesn't Fmb execute files marked as executable?
 =========================================================
 
-  For security reasons Thunar only executes files of type application/x-desktop,
+  For security reasons Fmb only executes files of type application/x-desktop,
   application/x-executable and application/x-shellscript. For desktop files
   the execution feature will only be enabled if the desktop file is of type
   Application and a valid Exec line is given. For the other types the feature
@@ -24,28 +24,28 @@ appropriate answers to these questions.
   listed above, or if the MIME-type is an alias for one of the above.
 
 
-3. Where does Thunar store the metadata associated with files?
+3. Where does Fmb store the metadata associated with files?
 ==============================================================
 
-  Thunar uses the metadata daemon provided by GVFS.
+  Fmb uses the metadata daemon provided by GVFS.
 
 
-4. Where does Thunar store its preferences?
+4. Where does Fmb store its preferences?
 ===========================================
 
-  Thunar stores the user configurable preferences (and hidden settings) in
+  Fmb stores the user configurable preferences (and hidden settings) in
   an .ini file, which is located at
 
-    $XDG_CONFIG_HOME/Thunar/thunarrc
+    $XDG_CONFIG_HOME/Fmb/fmbrc
 
-  and can be examined using a text editor. See docs/README.thunarrc for an
+  and can be examined using a text editor. See docs/README.fmbrc for an
   overview of the various preferences.
 
 
-5. How to use mouse gestures in Thunar?
+5. How to use mouse gestures in Fmb?
 =======================================
 
-  Thunar currently features basic support for so called "mouse gestures" in its
+  Fmb currently features basic support for so called "mouse gestures" in its
   icon view. You can use these "mouse gestures" by holding down the middle
   mouse button (usually the mouse wheel) while the mouse pointer is on the
   background area of the icon view component (any area that is not covered by
@@ -61,7 +61,7 @@ appropriate answers to these questions.
 6. How do I assign different keyboard shortcuts?
 ================================================
 
-  If you want to rebind a shortcut, Thunar supports the standard GTK+ way
+  If you want to rebind a shortcut, Fmb supports the standard GTK+ way
   of changing shortcuts: simply hover over the menu option with the mouse
   pointer and press the keyboard shortcut you want to rebind it to.
 
@@ -81,23 +81,23 @@ appropriate answers to these questions.
        gtk-can-change-accels=1
 
 
-7. Where does Thunar store the keyboard shortcuts?
+7. Where does Fmb store the keyboard shortcuts?
 ==================================================
 
   The custom keyboard shortcuts are stored in the standard Gtk accel map
   format in a file located at
 
-    $XDG_CONFIG_HOME/Thunar/accels.scm
+    $XDG_CONFIG_HOME/Fmb/accels.scm
 
   Lines starting with ; are comments. See the GTK+ documentation for details
   about the file format. If you are a packager or a system administrator and
   want to provide a system-wide default for the keyboard shortcuts, that is
-  different from the default shortcuts in Thunar, you can create a file
-  Thunar/accels.scm in one of the $XDG_CONFIG_DIRS. For example, if /etc/xdg
+  different from the default shortcuts in Fmb, you can create a file
+  Fmb/accels.scm in one of the $XDG_CONFIG_DIRS. For example, if /etc/xdg
   is part of $XDG_CONFIG_DIRS (most likely for most Linux distributions), you
   can install system-wide defaults to
 
-    /etc/xdg/Thunar/accels.scm
+    /etc/xdg/Fmb/accels.scm
 
-  Thunar will then load shortcuts from this file on first startup.
+  Fmb will then load shortcuts from this file on first startup.
 

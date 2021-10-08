@@ -1,0 +1,337 @@
+<!-- ##### SECTION Title ##### -->
+FmbxPropertyPage
+
+<!-- ##### SECTION Short_Description ##### -->
+The base class for pages added to the properties dialog
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+  The class for pages that can be added to Fmb's file properties dialog
+  by extensions implementing the #FmbxPropertyPageProvider interface. The
+  pages returned by extensions from fmbx_property_page_provider_get_pages()
+  method are instances of this class or a derived class. Note that extensions
+  do not need to subclass #FmbxPropertyPage, but may also instantiate it
+  directly and add widgets to it, but I strongly suggest to create a subclass
+  as it usually leads to better modularization and thereby better maintainability
+  in the code.
+</para>
+
+<para>
+  To pick up the #TagPage example from the fmbx_property_page_provider_get_pages()
+  description again, you'd create a new class #TagPage, that inherits #FmbxPropertyPage
+  (using the #FMBX_DEFINE_TYPE macro), which provides several user interface elements
+  in the property, and defines atleast one property named <literal>"file"</literal>, which
+  is the #FmbxFileInfo whose tags are displayed in the property page. For example, the
+  <filename>tag-page.h</filename> header file would look like this (this is really just
+  an example of the suggested way to implement property pages, you may of course choose
+  a different way):
+</para>
+
+<informalexample><programlisting>
+##ifndef __TAG_PAGE_H__
+##define __TAG_PAGE_H__
+
+##include &lt;fmbx/fmbx.h&gt;
+
+G_BEGIN_DECLS;
+
+typedef struct _TagPageClass TagPageClass;
+typedef struct _TagPage      TagPage;
+
+#define TAG_TYPE_PAGE            (tag_page_get_type ())
+#define TAG_PAGE(obj)            (G_TYPE_CHECK_INSTANCE_CAST ((obj), TAG_TYPE_PAGE, TagPage))
+#define TAG_PAGE_CLASS(klass)    (G_TYPE_CHECK_CLASS_CAST ((klass), TAG_TYPE_PAGE, TagPageClass))
+#define TAG_IS_PAGE(obj)         (G_TYPE_CHECK_INSTANCE_TYPE ((obj), TAG_TYPE_PAGE))
+#define TAG_IS_PAGE_CLASS(klass) (G_TYPE_CHECK_CLASS_TYPE ((klass), TAG_TYPE_PAGE))
+#define TAG_PAGE_GET_CLASS(obj)  (G_TYPE_INSTANCE_GET_CLASS ((obj), TAG_TYPE_PAGE, TagPageClass))
+
+/* these two functions are implemented automatically by the FMBX_DEFINE_TYPE macro */
+GType            tag_page_get_type      (void) G_GNUC_CONST;
+void             tag_page_register_type (FmbxProviderPlugin *plugin);
+
+GtkWidget       *tag_page_new           (FmbxFileInfo       *file) G_GNUC_MALLOC;
+
+FmbxFileInfo *tag_page_get_file      (TagPage               *tag_page);
+void             tag_page_set_file      (TagPage               *tag_page,
+                                         FmbxFileInfo       *file);
+
+G_END_DECLS;
+
+##endif /* !__TAG_PAGE_H__ */
+</programlisting></informalexample>
+
+<para>
+  And the <filename>tag-page.c</filename> source file could look like this:
+</para>
+
+<informalexample><programlisting>
+##include "tag-page.h"
+
+/* Property identifiers */
+enum
+{
+  PROP_0,
+  PROP_FILE,
+};
+
+static void tag_page_class_init   (TagPageClass *klass);
+static void tag_page_init         (TagPage          *tag_page);
+static void tag_page_finalize     (GObject          *object);
+static void tag_page_get_property (GObject          *object,
+                                   guint             prop_id,
+                                   GValue           *value,
+                                   GParamSpec       *pspec);
+static void tag_page_set_property (GObject          *object,
+                                   guint             prop_id,
+                                   const GValue     *value,
+                                   GParamSpec       *pspec);
+static void tag_page_file_changed (FmbxFileInfo  *file,
+                                   TagPage          *tag_page);
+
+struct _TagPageClass
+{
+  FmbxPropertyPageClass __parent__;
+};
+
+struct _TagPage
+{
+  FmbxPropertyPage __parent__;
+  FmbxFileInfo    *file;
+
+  /* your widgets... */
+};
+
+/* implements the tag_page_get_type() and tag_page_register_type() functions */
+FMBX_DEFINE_TYPE (TagPage, tag_page, FMBX_TYPE_PROPERTY_PAGE);
+
+static void
+tag_page_class_init (TagPageClass *klass)
+{
+  GObjectClass *gobject_class;
+
+  gobject_class = G_OBJECT_CLASS (klass);
+  gobject_class->finalize = tag_page_finalize;
+  gobject_class->get_property = tag_page_get_property;
+  gobject_class->set_property = tag_page_set_property;
+
+  /**
+   * TagPage:file:
+   *
+   * The #FmbxFileInfo displayed by this #TagPage.
+   **/
+  g_object_class_install_property (gobject_class,
+                                   PROP_FILE,
+                                   g_param_spec_object ("file", "file", "file,
+                                                        FMBX_TYPE_FILE_INFO,
+                                                        G_PARAM_READWRITE));
+}
+
+static void
+tag_page_init (TagPage *tag_page)
+{
+  GtkWidget *table;
+
+  /* you can of course also use a GtkVBox here, or whatever */
+  table = gtk_table_new (2, 2, FALSE);
+  gtk_container_add (GTK_CONTAINER (tag_page), table);
+  gtk_widget_show (table);
+
+  /* add your widgets to the table... */
+}
+
+static void
+tag_page_finalize (GObject *object)
+{
+  TagPage *tag_page = TAG_PAGE (object);
+
+  /* disconnect from the file */
+  tag_page_set_file (tag_page, NULL);
+
+  /* release any additional resources... */
+
+  (*G_OBJECT_CLASS (tag_page_parent_class)->finalize) (object);
+}
+
+static void
+tag_page_get_property (GObject    *object,
+                       guint       prop_id,
+                       GValue     *value,
+                       GParamSpec *pspec)
+{
+  TagPage *tag_page = TAG_PAGE (object);
+
+  switch (prop_id)
+    {
+    case PROP_FILE:
+      g_value_set_object (value, tag_page_get_file (tag_page));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+tag_page_set_property (GObject      *object,
+                       guint         prop_id,
+                       const GValue *value,
+                       GParamSpec   *pspec)
+{
+  TagPage *tag_page = TAG_PAGE (object);
+
+  switch (prop_id)
+    {
+    case PROP_FILE:
+      tag_page_set_file (tag_page, g_value_get_object (value));
+      break;
+
+    default:
+      G_OBJECT_WARN_INVALID_PROPERTY_ID (object, prop_id, pspec);
+      break;
+    }
+}
+
+static void
+tag_page_file_changed (FmbxFileInfo *file,
+                       TagPage         *tag_page)
+{
+  /* update your user interface elements in the tag_page
+   * to display the new state of the file...
+   */
+}
+
+GtkWidget*
+tag_page_new (FmbxFileInfo *file)
+{
+  return g_object_new (TAG_TYPE_PAGE, "file", file, NULL);
+}
+
+FmbxFileInfo*
+tag_page_get_file (TagPage *tag_page)
+{
+  g_return_val_if_fail (TAG_IS_PAGE (tag_page), NULL);
+  return tag_page->file;
+}
+
+void
+tag_page_set_file (TagPage         *tag_page,
+                   FmbxFileInfo *file)
+{
+  g_return_if_fail (TAG_IS_PAGE (tag_page));
+  g_return_if_fail (file == NULL || FMBX_IS_FILE_INFO (file));
+
+  if (tag_page->file != NULL)
+    {
+      g_signal_handlers_disconnect_by_func (tag_page->file, tag_page_file_changed, tag_page);
+      g_object_unref (G_OBJECT (tag_page->file));
+    }
+
+  tag_page->file = file;
+
+  if (file != NULL)
+    {
+      g_object_ref (file);
+      tag_page_file_changed (file, tag_page);
+      g_signal_connect (file, "changed", G_CALLBACK (tag_page_file_changed), tag_page);
+    }
+
+  g_object_notify (G_OBJECT (tag_page), "file");
+}
+</programlisting></informalexample>
+
+<para>
+  If this seems to be too complicated to you, just don't follow the suggestion. But keep in mind, that
+  while the above solution is a little longer than a less structured solution, it yields great flexbility
+  and maintainability. For example the #TagPage class described above, once filled with user interface
+  elements, may be used for a standalone MP3-Tag editor out of the box (i.e. as an action returned from
+  the fmbx_renamer_get_actions() method).
+</para>
+
+<para>
+  What is important to remember is that you should connect to the <literal>"changed"</literal> signal
+  of the #FmbxFileInfo<!---->s you are displaying, and update the user interface whenever the file
+  changes.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+  The description of the <link linkend="FmbxPropertyPageProvider"><type>FmbxPropertyPageProvider</type></link> interface.
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+Stable
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT FmbxPropertyPage ##### -->
+<para>
+  Base instance type for property pages.
+</para>
+
+
+<!-- ##### ARG FmbxPropertyPage:label ##### -->
+<para>
+
+</para>
+
+<!-- ##### ARG FmbxPropertyPage:label-widget ##### -->
+<para>
+
+</para>
+
+<!-- ##### FUNCTION fmbx_property_page_new ##### -->
+<para>
+
+</para>
+
+@label: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_property_page_new_with_label_widget ##### -->
+<para>
+
+</para>
+
+@label_widget: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_property_page_get_label ##### -->
+<para>
+
+</para>
+
+@property_page: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_property_page_set_label ##### -->
+<para>
+
+</para>
+
+@property_page: 
+@label: 
+
+
+<!-- ##### FUNCTION fmbx_property_page_get_label_widget ##### -->
+<para>
+
+</para>
+
+@property_page: 
+@Returns: 
+
+
+<!-- ##### FUNCTION fmbx_property_page_set_label_widget ##### -->
+<para>
+
+</para>
+
+@property_page: 
+@label_widget: 
+
+

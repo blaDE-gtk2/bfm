@@ -18,10 +18,10 @@
 #
 
 # --------------------------------------------------------------------------- #
-# Simple example of how to communicate with Thunar (and any other Xfce file   #
-# file manager) using the org.xfce.FileManager D-BUS interface.               #
+# Simple example of how to communicate with Fmb (and any other Xfce file   #
+# file manager) using the org.blade.FileManager D-BUS interface.               #
 #                                                                             #
-# Thunar must be compiled with D-BUS support for this to work.                #
+# Fmb must be compiled with D-BUS support for this to work.                #
 # --------------------------------------------------------------------------- #
 
 import gtk
@@ -32,8 +32,8 @@ if getattr(dbus, 'version', (0,0,0)) >= (0,41,0):
 
 # acquire a reference to the FileManager object
 bus = dbus.SessionBus()
-xfce_file_manager_object = bus.get_object('org.xfce.FileManager', '/org/xfce/FileManager')
-xfce_file_manager = dbus.Interface(xfce_file_manager_object, 'org.xfce.FileManager')
+xfce_file_manager_object = bus.get_object('org.blade.FileManager', '/org/blade/FileManager')
+xfce_file_manager = dbus.Interface(xfce_file_manager_object, 'org.blade.FileManager')
 
 # You can now invoke methods on the xfce_file_manager object,
 # for example, to open a new file manager window for /tmp, you
@@ -60,7 +60,7 @@ xfce_file_manager = dbus.Interface(xfce_file_manager_object, 'org.xfce.FileManag
 #
 # xfce_file_manager.Launch('/path/to/file', '', '')
 #
-# See the thunar-dbus-service-infos.xml file for the exact
+# See the fmb-dbus-service-infos.xml file for the exact
 # interface definition.
 #
 

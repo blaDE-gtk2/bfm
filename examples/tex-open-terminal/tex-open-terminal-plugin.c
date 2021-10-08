@@ -26,9 +26,9 @@
 
 
 
-G_MODULE_EXPORT void thunar_extension_initialize (ThunarxProviderPlugin *plugin);
-G_MODULE_EXPORT void thunar_extension_shutdown   (void);
-G_MODULE_EXPORT void thunar_extension_list_types (const GType         **types,
+G_MODULE_EXPORT void fmb_extension_initialize (FmbxProviderPlugin *plugin);
+G_MODULE_EXPORT void fmb_extension_shutdown   (void);
+G_MODULE_EXPORT void fmb_extension_list_types (const GType         **types,
                                                   gint                 *n_types);
 
 
@@ -39,12 +39,12 @@ static GType type_list[1];
 
 
 void
-thunar_extension_initialize (ThunarxProviderPlugin *plugin)
+fmb_extension_initialize (FmbxProviderPlugin *plugin)
 {
   const gchar *mismatch;
 
-  /* verify that the thunarx versions are compatible */
-  mismatch = thunarx_check_version (THUNARX_MAJOR_VERSION, THUNARX_MINOR_VERSION, THUNARX_MICRO_VERSION);
+  /* verify that the fmbx versions are compatible */
+  mismatch = fmbx_check_version (FMBX_MAJOR_VERSION, FMBX_MINOR_VERSION, FMBX_MICRO_VERSION);
   if (G_UNLIKELY (mismatch != NULL))
     {
       g_warning ("Version mismatch: %s", mismatch);
@@ -63,7 +63,7 @@ thunar_extension_initialize (ThunarxProviderPlugin *plugin)
 
 
 void
-thunar_extension_shutdown (void)
+fmb_extension_shutdown (void)
 {
   g_message ("Shutting down TexOpenTerminal extension");
 }
@@ -71,7 +71,7 @@ thunar_extension_shutdown (void)
 
 
 void
-thunar_extension_list_types (const GType **types,
+fmb_extension_list_types (const GType **types,
                              gint         *n_types)
 {
   *types = type_list;

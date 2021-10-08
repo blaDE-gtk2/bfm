@@ -1,51 +1,51 @@
 What is it?
 ===========
 
-Thunar is a modern file manager for the Unix/Linux desktop, aiming to be
+Fmb is a modern file manager for the Unix/Linux desktop, aiming to be
 easy-to-use and fast.
 
 
 Required packages
 =================
 
-Thunar depends on the following packages:
+Fmb depends on the following packages:
 
  - perl 5.6 or above
  - GTK+ 2.24.0 or above
  - GLib 2.30.0 or above
- - exo 0.10.0 or above
+ - blxo 0.10.0 or above
  - intltool 0.30 or above
 
-Thunar can optionally use the following packages:
+Fmb can optionally use the following packages:
 
  - D-Bus 0.34 or above (strongly suggested)
  - libstartup-notification 0.4 or above
- - xfce4-panel 4.10.0 or above (for the trash applet)
- - xfconf-query
+ - blade-bar 4.10.0 or above (for the trash applet)
+ - blconf-query
 
 
 Installation
 ============
 
 The file 'INSTALL' contains generic installation instructions. For more
-detailed information, visit 'https://docs.xfce.org/xfce/thunar/start' .
+detailed information, visit 'https://docs.xfce.org/blade/fmb/start' .
 
 
 Debugging Support
 =================
 
-Thunar currently supports four different levels of debugging support, which
+Fmb currently supports four different levels of debugging support, which
 can be setup using the configure flag `--enable-debug' (check the output of
 `configure --help'):
 
-  `full'	Use this if you want to debug Thunar to locate a bug. The
+  `full'	Use this if you want to debug Fmb to locate a bug. The
   		build will most probably be noticably slower. This is also
-		recommended for people that want to develop Thunar stuff.
+		recommended for people that want to develop Fmb stuff.
 
   `yes'		This is the default for SVN snapshot builds. It adds all
   		kinds of checks to the code, and is therefore likely to run
-		slower. Use this if you want to develop for Thunar (e.g.
-		writing Thunar extensions and such).
+		slower. Use this if you want to develop for Fmb (e.g.
+		writing Fmb extensions and such).
 
   `minimum'	This is the default for release builds, and presents the
   		recommended behaviour.
@@ -57,7 +57,7 @@ can be setup using the configure flag `--enable-debug' (check the output of
 Standards compliance
 ====================
 
-Thunar supports the following standards/specifications:
+Fmb supports the following standards/specifications:
 
   * XDG Base Directory Specification
     http://freedesktop.org/wiki/Standards_2fbasedir_2dspec
@@ -85,7 +85,7 @@ How to report bugs?
 ===================
 
 Bugs should be reported to the Xfce bug tracking system
-(http://bugzilla.xfce.org, product Thunar). You will need to
+(http://bugzilla.xfce.org, product Fmb). You will need to
 create an account for yourself.
 
 Please read the HACKING file for information on where to send

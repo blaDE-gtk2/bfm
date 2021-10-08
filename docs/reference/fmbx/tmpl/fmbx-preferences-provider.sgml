@@ -1,0 +1,117 @@
+<!-- ##### SECTION Title ##### -->
+FmbxPreferencesProvider
+
+<!-- ##### SECTION Short_Description ##### -->
+The interface to extensions that provide preferences
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+  The FmbxPreferencesProvider interface is implemented by extensions that
+  want to register additional actions in the preferences menu of the file
+  manager. In general this should only be done by extensions that are closely
+  tied to the file manager (for example, the <literal>fmb-uca</literal> is
+  such an extension, while an extension that just adds <guimenuitem>Compress
+  file</guimenuitem> and <guimenuitem>Uncompress file</guimenuitem> to the
+  context menu of compressed files should not add their own preferences to
+  the file manager menu, because it should use desktop-wide settings for
+  archive managers instead).
+</para>
+
+<para>
+  The <link linkend="GtkAction"><type>GtkAction</type></link>s returned from the
+  fmbx_preferences_provider_get_actions() method must be namespaced with the
+  model to avoid collision with internal file manager actions and actions provided
+  by other extensions. For example, the preferences action provided by the
+  <literal>fmb-uca</literal> extension is called
+  <literal>FmbUca::manage-actions</literal>.
+</para>
+
+<example>
+  <title>Preferences provider example</title>
+
+  <programlisting>
+static void hello_preferences_provider_init (FmbxPreferencesProviderIface *iface);
+static void hello_get_actions               (FmbxPreferencesProvider      *provider,
+                                             GtkWidget                       *window);
+
+FMBX_DEFINE_TYPE_WITH_CODE (Hello, hello, G_TYPE_OBJECT,
+                               FMBX_IMPLEMENT_INTERFACE (FMBX_TYPE_PREFERENCES_PROVIDER,
+                                                            hello_preferences_provider_init));
+
+static void
+hello_preferences_provider_init (FmbxPreferencesProviderIface *iface)
+{
+  iface->get_actions = hello_get_actions;
+}
+
+static void
+hello_activated (GtkWidget *window)
+{
+  GtkWidget *dialog;
+
+  dialog = gtk_message_dialog_new (GTK_WINDOW (window),
+                                   GTK_DIALOG_MODAL
+                                   | GTK_DIALOG_DESTROY_WITH_PARENT,
+                                   GTK_MESSAGE_INFO,
+                                   GTK_BUTTONS_OK,
+                                   "Hello World!");
+  gtk_dialog_run (GTK_DIALOG (dialog));
+  gtk_widget_destroy (dialog);
+}
+
+static GList*
+hello_get_actions (FmbxPreferencesProvider *provider,
+                   GtkWidget                  *window)
+{
+  GtkAction *action;
+  GClosure  *closure;
+
+  action = gtk_action_new ("Hello::say-hello", "Say hello", "Say hello", NULL);
+  closure = g_cclosure_new_object_swap (G_CALLBACK (hello_activated), G_OBJECT (window));
+  g_signal_connect_closure (G_OBJECT (action), "activate", closure, TRUE);
+
+  return g_list_prepend (NULL, action);
+}
+  </programlisting>
+</example>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+Stable
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT FmbxPreferencesProviderIface ##### -->
+<para>
+  Interface with virtual methods implementation by extensions that
+  want to install preferences actions in the file managers menu.
+</para>
+
+<para>
+  Providers don't need to implement all of the virtual methods listed
+  in the interface.
+</para>
+
+@get_actions: See fmbx_preferences_provider_get_actions().
+
+<!-- ##### STRUCT FmbxPreferencesProvider ##### -->
+<para>
+  Preferences provider type.
+</para>
+
+
+<!-- ##### FUNCTION fmbx_preferences_provider_get_actions ##### -->
+<para>
+
+</para>
+
+@provider: 
+@window: 
+@Returns: 
+
+

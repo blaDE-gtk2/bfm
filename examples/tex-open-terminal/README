@@ -1,13 +1,13 @@
-This is an example for a Thunar Extension that provides additional context
+This is an example for a Fmb Extension that provides additional context
 menu items. It adds an "Open Terminal Here" action to the folder context
 menu and to the file context menu of directories, and thereby allows you
 to open a new Terminal instance in the given folder.
 
 The example is mainly provided for developers to get an idea about how
-to write an extension that implements the ThunarxMenuProvider interface.
+to write an extension that implements the FmbxMenuProvider interface.
 
 The extension is not installed by default, as every installed extension
-increases the resources required to run Thunar. If you want to install
+increases the resources required to run Fmb. If you want to install
 this extension, you can use the command
 
   make install-extensionsLTLIBRARIES
@@ -15,8 +15,8 @@ this extension, you can use the command
 in this directory.
 
 Please note that this extension is not meant for daily use, but should just
-serve as an example of how to write a simple Thunar extension. If you want
+serve as an example of how to write a simple Fmb extension. If you want
 to be able to open a terminal in a specific folder, you should consider
-installing the thunar-uca extension (see thunar-uca/README) and adding an
+installing the fmb-uca extension (see fmb-uca/README) and adding an
 "Open Terminal Here" action there (there's already such an action available
 by default).

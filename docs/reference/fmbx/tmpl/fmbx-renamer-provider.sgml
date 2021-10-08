@@ -1,0 +1,48 @@
+<!-- ##### SECTION Title ##### -->
+FmbxRenamerProvider
+
+<!-- ##### SECTION Short_Description ##### -->
+The interface to extensions that provide additional bulk renamers
+
+<!-- ##### SECTION Long_Description ##### -->
+<para>
+  The <interface>FmbxRenamerProvider</interface> interface is implemented by
+  extensions which provide additional bulk renamers that should be used by the
+  bulk rename dialog in Fmb.
+</para>
+
+<!-- ##### SECTION See_Also ##### -->
+<para>
+  The description of the abstract base class
+  <link linkend="FmbxRenamer"><type>FmbxRenamer</type></link>.
+</para>
+
+<!-- ##### SECTION Stability_Level ##### -->
+
+
+<!-- ##### SECTION Image ##### -->
+
+
+<!-- ##### STRUCT FmbxRenamerProvider ##### -->
+<para>
+  Bulk renamer provider type.
+</para>
+
+
+<!-- ##### STRUCT FmbxRenamerProviderIface ##### -->
+<para>
+  Interface with virtual methods implemented by extensions that provide
+  additional bulk renamers for the integrated bulk renamer in Fmb.
+</para>
+
+@get_renamers: see fmbx_renamer_provider_get_renamers().
+
+<!-- ##### FUNCTION fmbx_renamer_provider_get_renamers ##### -->
+<para>
+
+</para>
+
+@provider: 
+@Returns: 
+
+

@@ -23,8 +23,8 @@ SUBDIRS =								\
 	icons								\
 	pixmaps								\
 	po								\
-	thunarx								\
-	thunar								\
+	fmbx								\
+	fmb								\
 	docs								\
 	examples							\
 	plugins
@@ -46,24 +46,24 @@ ChangeLog: Makefile
 
 dist-hook: ChangeLog
 
-thunar_scriptsdir = $(HELPER_PATH_PREFIX)/Thunar
-thunar_scripts_SCRIPTS =						\
-	ThunarBulkRename
+fmb_scriptsdir = $(HELPER_PATH_PREFIX)/Fmb
+fmb_scripts_SCRIPTS =						\
+	FmbBulkRename
 
-ThunarBulkRename: ThunarBulkRename.in Makefile
+FmbBulkRename: FmbBulkRename.in Makefile
 	$(AM_V_GEN) (							\
-		rm -f ThunarBulkRename.gen ThunarBulkRename		\
+		rm -f FmbBulkRename.gen FmbBulkRename		\
 		&& $(SED) -e "s,\@bindir\@,$(bindir),g" 			\
-			< $(srcdir)/ThunarBulkRename.in			\
-			> ThunarBulkRename.gen				\
-		&& mv ThunarBulkRename.gen ThunarBulkRename 		\
+			< $(srcdir)/FmbBulkRename.in			\
+			> FmbBulkRename.gen				\
+		&& mv FmbBulkRename.gen FmbBulkRename 		\
 	)
 
 desktopdir = $(datadir)/applications
 desktop_in_in_files = 							\
-	Thunar.desktop.in.in						\
-	Thunar-bulk-rename.desktop.in.in				\
-	Thunar-folder-handler.desktop.in.in
+	Fmb.desktop.in.in						\
+	Fmb-bulk-rename.desktop.in.in				\
+	Fmb-folder-handler.desktop.in.in
 desktop_in_files = $(desktop_in_in_files:.desktop.in.in=.desktop.in)
 %.desktop.in: %.desktop.in.in
 	$(AM_V_GEN) $(SED) -e "s,\@HELPERDIR\@,$(HELPER_PATH_PREFIX),g" < $< > $@
@@ -76,11 +76,11 @@ desktop_DATA = $(desktop_in_files:.desktop.in=.desktop)
 @INTLTOOL_XML_RULE@
 appdatadir = $(datadir)/appdata
 appdata_DATA = $(appdata_in_files:.xml.in=.xml)
-appdata_in_files = thunar.appdata.xml.in
+appdata_in_files = fmb.appdata.xml.in
 
 if HAVE_DBUS
 servicedir = $(datadir)/dbus-1/services
-service_in_files = org.xfce.FileManager.service.in org.xfce.Thunar.service.in
+service_in_files = org.blade.FileManager.service.in org.blade.Fmb.service.in
 service_DATA = $(service_in_files:.service.in=.service)
 %.service: %.service.in
 	$(AM_V_GEN) $(SED) -e "s,\@bindir\@,$(bindir),g" < $< > $@
@@ -88,7 +88,7 @@ endif
 
 polkit_policydir = $(datadir)/polkit-1/actions
 polkit_in_in_files =			\
-	org.xfce.thunar.policy.in.in
+	org.blade.fmb.policy.in.in
 polkit_in_files = $(polkit_in_in_files:.policy.in.in=.policy.in)
 %.policy.in: %.policy.in.in
 	sed -e "s,\@bindir\@,$(bindir),g" < $< > $@
@@ -98,7 +98,7 @@ polkit_policy_DATA = $(polkit_in_files:.policy.in=.policy)
 EXTRA_DIST =								\
 	FAQ								\
 	HACKING								\
-	ThunarBulkRename.in						\
+	FmbBulkRename.in						\
 	intltool-extract.in						\
 	intltool-merge.in						\
 	intltool-update.in						\
@@ -110,7 +110,7 @@ EXTRA_DIST =								\
 CLEANFILES		= $(appdata_DATA)
 
 DISTCLEANFILES =							\
-	ThunarBulkRename						\
+	FmbBulkRename						\
 	intltool-extract						\
 	intltool-merge							\
 	intltool-update							\

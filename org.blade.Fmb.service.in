@@ -1,0 +1,3 @@
+[D-BUS Service]
+Name=org.blade.Fmb
+Exec=@bindir@/Fmb --daemon

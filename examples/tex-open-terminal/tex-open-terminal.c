@@ -29,18 +29,18 @@
 #include <string.h>
 #endif
 
-#include <libxfce4ui/libxfce4ui.h>
+#include <libbladeui/libbladeui.h>
 #include <tex-open-terminal/tex-open-terminal.h>
 
 
 
-static void   tex_open_terminal_menu_provider_init (ThunarxMenuProviderIface *iface);
-static GList *tex_open_terminal_get_file_actions   (ThunarxMenuProvider      *provider,
+static void   tex_open_terminal_menu_provider_init (FmbxMenuProviderIface *iface);
+static GList *tex_open_terminal_get_file_actions   (FmbxMenuProvider      *provider,
                                                     GtkWidget                *window,
                                                     GList                    *files);
-static GList *tex_open_terminal_get_folder_actions (ThunarxMenuProvider      *provider,
+static GList *tex_open_terminal_get_folder_actions (FmbxMenuProvider      *provider,
                                                     GtkWidget                *window,
-                                                    ThunarxFileInfo          *folder);
+                                                    FmbxFileInfo          *folder);
 static void   tex_open_terminal_activated          (GtkAction                *action,
                                                     GtkWidget                *window);
 
@@ -58,10 +58,10 @@ struct _TexOpenTerminal
 
 
 
-THUNARX_DEFINE_TYPE_WITH_CODE (TexOpenTerminal,
+FMBX_DEFINE_TYPE_WITH_CODE (TexOpenTerminal,
                                tex_open_terminal,
                                G_TYPE_OBJECT,
-                               THUNARX_IMPLEMENT_INTERFACE (THUNARX_TYPE_MENU_PROVIDER,
+                               FMBX_IMPLEMENT_INTERFACE (FMBX_TYPE_MENU_PROVIDER,
                                                             tex_open_terminal_menu_provider_init));
 
 
@@ -83,7 +83,7 @@ tex_open_terminal_init (TexOpenTerminal *open_terminal)
 
 
 static void
-tex_open_terminal_menu_provider_init (ThunarxMenuProviderIface *iface)
+tex_open_terminal_menu_provider_init (FmbxMenuProviderIface *iface)
 {
   iface->get_file_actions = tex_open_terminal_get_file_actions;
   iface->get_folder_actions = tex_open_terminal_get_folder_actions;
@@ -92,12 +92,12 @@ tex_open_terminal_menu_provider_init (ThunarxMenuProviderIface *iface)
 
 
 static GList*
-tex_open_terminal_get_file_actions (ThunarxMenuProvider *provider,
+tex_open_terminal_get_file_actions (FmbxMenuProvider *provider,
                                     GtkWidget           *window,
                                     GList               *files)
 {
   /* check if we have a directory here */
-  if (G_LIKELY (files != NULL && files->next == NULL && thunarx_file_info_is_directory (files->data)))
+  if (G_LIKELY (files != NULL && files->next == NULL && fmbx_file_info_is_directory (files->data)))
     return tex_open_terminal_get_folder_actions (provider, window, files->data);
 
   return NULL;
@@ -106,9 +106,9 @@ tex_open_terminal_get_file_actions (ThunarxMenuProvider *provider,
 
 
 static GList*
-tex_open_terminal_get_folder_actions (ThunarxMenuProvider *provider,
+tex_open_terminal_get_folder_actions (FmbxMenuProvider *provider,
                                       GtkWidget           *window,
-                                      ThunarxFileInfo     *folder)
+                                      FmbxFileInfo     *folder)
 {
   GtkAction *action = NULL;
   gchar     *scheme;
@@ -116,11 +116,11 @@ tex_open_terminal_get_folder_actions (ThunarxMenuProvider *provider,
   gchar     *uri;
 
   /* determine the uri scheme of the folder and check if we support it */
-  scheme = thunarx_file_info_get_uri_scheme (folder);
+  scheme = fmbx_file_info_get_uri_scheme (folder);
   if (G_LIKELY (strcmp (scheme, "file") == 0))
     {
       /* determine the local path to the folder */
-      uri = thunarx_file_info_get_uri (folder);
+      uri = fmbx_file_info_get_uri (folder);
       path = g_filename_from_uri (uri, NULL, NULL);
       g_free (uri);
 

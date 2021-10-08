@@ -1,7 +1,7 @@
-thunarx/thunarx-file-info.c
-thunarx/thunarx-menu-provider.c
-thunarx/thunarx-preferences-provider.c
-thunarx/thunarx-property-page-provider.c
-thunarx/thunarx-provider-factory.c
-thunarx/thunarx-provider-module.c
-thunarx/thunarx-renamer-provider.c
+fmbx/fmbx-file-info.c
+fmbx/fmbx-menu-provider.c
+fmbx/fmbx-preferences-provider.c
+fmbx/fmbx-property-page-provider.c
+fmbx/fmbx-provider-factory.c
+fmbx/fmbx-provider-module.c
+fmbx/fmbx-renamer-provider.c

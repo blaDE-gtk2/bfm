@@ -1,0 +1,12 @@
+#include <fmbx/fmbx.h>
+
+fmbx_file_info_get_type
+fmbx_menu_provider_get_type
+fmbx_preferences_provider_get_type
+fmbx_property_page_get_type
+fmbx_property_page_provider_get_type
+fmbx_provider_factory_get_type
+fmbx_provider_plugin_get_type
+fmbx_renamer_get_type
+fmbx_renamer_provider_get_type
+

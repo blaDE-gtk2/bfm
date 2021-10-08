@@ -18,7 +18,7 @@
 #
 
 # --------------------------------------------------------------- #
-# This example demonstrates how to integrate Thunar's Bulk Rename #
+# This example demonstrates how to integrate Fmb's Bulk Rename #
 # functionality into Nautilus. You'll need the nautilus-python    #
 # bindings to actually try this example.                          #
 #                                                                 #
@@ -31,7 +31,7 @@
 # Rename" in the file context menu, which can be used to rename   #
 # the selected files.                                             #
 #                                                                 #
-# Thunar must be compiled with D-BUS support for this to work.    #
+# Fmb must be compiled with D-BUS support for this to work.    #
 # --------------------------------------------------------------- #
 
 
@@ -46,14 +46,14 @@ if getattr(dbus, 'version', (0,0,0)) >= (0,41,0):
 class NautilusBulkRename(nautilus.MenuProvider):
   def __init__(self):
     bus = dbus.SessionBus()
-    thunar_object = bus.get_object('org.xfce.Thunar', '/org/xfce/FileManager')
-    self.thunar = dbus.Interface(thunar_object, 'org.xfce.Thunar')
+    fmb_object = bus.get_object('org.blade.Fmb', '/org/blade/FileManager')
+    self.fmb = dbus.Interface(fmb_object, 'org.blade.Fmb')
 
   def menu_activate_cb(self, item, files):
     uris = []
     for file in files:
       uris.append(file.get_uri())
-    self.thunar.BulkRename(files[0].get_parent_uri(), uris, False, item.get_data('display'))
+    self.fmb.BulkRename(files[0].get_parent_uri(), uris, False, item.get_data('display'))
 
   def get_file_items(self, window, files):
     if len(files) == 0:

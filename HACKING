@@ -1,29 +1,29 @@
 Bug tracking system
 ===================
 
-Thunar uses the Xfce bug tracking system at http://bugzilla.xfce.org/,
+Fmb uses the Xfce bug tracking system at http://bugzilla.xfce.org/,
 hosted and maintained by the Xfce project.
 
 
 Patches
 =======
 
-Please submit patches to the Xfce bug tracking system or to the thunar-dev
+Please submit patches to the Xfce bug tracking system or to the fmb-dev
 mailinglist. Your patch should be in unified diff format (the -u option
 to GNU diff) and it must comply with the coding style described below.
 
 Please send a patch against a recent version of this package. Patches
 against the Git master branch are most preferable. You can always
-clone the Thunar repository from
+clone the Fmb repository from
 
-  http://git.xfce.org/git/xfce/thunar
+  http://git.xfce.org/git/xfce/fmb
 
 
 Feature requests
 ================
 
 Please file feature requests to the Xfce bug tracking system
-(http://buzilla.xfce.org, product Thunar) with a Severity of
+(http://buzilla.xfce.org, product Fmb) with a Severity of
 enhancement. Make sure that your feature request wasn't reported
 already before; requesting a feature several times won't increase
 the changed that it gets added!
@@ -42,7 +42,7 @@ Coding Style
    statements, and so any use of these macros to control program
    flow presents a bug!
  - Do NOT follow the philosophy "If it works, it's right" that most
-   other open source projects follow, instead Thunar's philosophy is
+   other open source projects follow, instead Fmb's philosophy is
    "It doesn't work unless it's right". Think carefully of what you want
    to do, don't just fire up your favourite editor and start hacking
    in the hope that it will evolve into something useful one day.
@@ -51,7 +51,7 @@ Coding Style
    quite easy to optimize well-designed modules, but very hard and costly
    to make spaghetti-code readable.
  - Write ChangeLog entries. Whenever you commit a change or send a patch,
-   write a good entry per change to the ChangeLog file, see the libexo
+   write a good entry per change to the ChangeLog file, see the libblxo
    ChangeLog for the exact format; it's very important to be descriptive
    and correct here, else you'll loose your commit bits or your patches
    won't be considered for inclusion.

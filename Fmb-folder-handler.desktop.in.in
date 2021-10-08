@@ -1,0 +1,15 @@
+[Desktop Entry]
+_Name=Open Folder with Fmb
+_Comment=Open the specified folders in Fmb
+_GenericName=Open Folder
+TryExec=Fmb
+Exec=fmb %F
+Icon=Fmb
+NoDisplay=true
+Terminal=false
+StartupNotify=true
+Type=Application
+Categories=System;Utility;Core;GTK;FileTools;FileManager;
+MimeType=inode/directory;
+
+# vi:set encoding=UTF-8:

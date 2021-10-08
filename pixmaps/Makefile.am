@@ -1,6 +1,6 @@
-pixmapsdir = $(datadir)/pixmaps/Thunar
+pixmapsdir = $(datadir)/pixmaps/Fmb
 pixmaps_DATA =								\
-	Thunar-about-logo.png
+	Fmb-about-logo.png
 
 EXTRA_DIST =								\
 	$(pixmaps_DATA)
