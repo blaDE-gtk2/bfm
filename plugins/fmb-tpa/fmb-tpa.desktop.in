@@ -1,0 +1,9 @@
+[Xfce Panel]
+Type=X-XFCE-BarPlugin
+_Name=Trash Applet
+_Comment=Display the trash can
+Icon=user-trash
+X-XFCE-Module=fmb-tpa
+X-XFCE-Internal=FALSE
+X-XFCE-API=2.0
+X-XFCE-Unique=true
