@@ -28,7 +28,7 @@ core.*
 core
 *.core
 *.desktop
-*.desktop.in
+# *.desktop.in
 *.service
 *.policy
 thunar.appdata.xml
