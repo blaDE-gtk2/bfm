@@ -1,0 +1,11 @@
+[Desktop Entry]
+Version=1.0
+_Name=File Manager Settings
+_Comment=Configure the Fmb file manager
+_Keywords=fmb;settings;preferences;configure;thumbnails;file size;date format;shortcuts pane;tree view;tabs;
+Exec=fmb-settings
+Icon=org.blade.fmb
+Terminal=false
+Type=Application
+Categories=XFCE;GTK;Settings;DesktopSettings;X-XFCE-SettingsDialog;X-XFCE-PersonalSettings;
+StartupNotify=true
